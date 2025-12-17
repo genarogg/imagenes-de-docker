@@ -3,7 +3,7 @@ services:
   wordpress:
     image: "wordpress:latest"
     volumes:
-      - "wordpress-files:/var/www/html"
+      - "wordpress-files:/var/www/html" 
     environment:
       SERVICE_URL_WORDPRESS: "${SERVICE_URL_WORDPRESS}"
       WORDPRESS_DB_HOST: mysql
