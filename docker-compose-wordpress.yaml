@@ -3,6 +3,7 @@ services:
     image: wordpress:latest
     volumes:
       - wordpress-files:/var/www/html
+    command: ["bash","-lc","printf '%s\\n' 'file_uploads=On' 'memory_limit=1024M' 'upload_max_filesize=1024M' 'post_max_size=1024M' 'max_execution_time=300' 'max_input_time=300' > /usr/local/etc/php/conf.d/uploads.ini && exec apache2-foreground"]
     environment:
       - SERVICE_URL_WORDPRESS
       - WORDPRESS_DB_HOST=mysql
