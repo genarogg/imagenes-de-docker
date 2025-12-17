@@ -4,7 +4,6 @@ services:
     image: "wordpress:latest"
     volumes:
       - "wordpress-files:/var/www/html"
-      - "./uploads.ini:/usr/local/etc/php/conf.d/uploads.ini:ro"
     environment:
       SERVICE_URL_WORDPRESS: "${SERVICE_URL_WORDPRESS}"
       WORDPRESS_DB_HOST: mysql
@@ -19,7 +18,6 @@ services:
         - CMD
         - curl
         - "-f"
-        - "http://127.0.0.1"
       interval: 5s
       timeout: 10s
       retries: 10
