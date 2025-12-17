@@ -1,15 +1,21 @@
-version: "3.9"
 services:
   wordpress:
     image: "wordpress:latest"
     volumes:
       - "wordpress-files:/var/www/html" 
+      - "./init-php-uploads.sh:/usr/local/bin/init-php-uploads.sh:ro"
     environment:
       SERVICE_URL_WORDPRESS: "${SERVICE_URL_WORDPRESS}"
       WORDPRESS_DB_HOST: mysql
       WORDPRESS_DB_USER: "${SERVICE_USER_WORDPRESS}"
       WORDPRESS_DB_PASSWORD: "${SERVICE_PASSWORD_WORDPRESS}"
       WORDPRESS_DB_NAME: wordpress
+      PHP_UPLOAD_MAX_FILESIZE: "64M"
+      PHP_POST_MAX_SIZE: "64M"
+    command:
+      - sh
+      - -c
+      - sh /usr/local/bin/init-php-uploads.sh && apache2-foreground
     depends_on:
       mysql:
         condition: service_healthy
