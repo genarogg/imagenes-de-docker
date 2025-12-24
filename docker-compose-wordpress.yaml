@@ -84,3 +84,7 @@ volumes:
   mysql-data:
   filebrowser-data:
   filebrowser-config:
+
+
+# agg un usuario admin a filebrowser
+# filebrowser users add admin tuContraseña --perm.admin

@@ -1,0 +1,14 @@
+services:
+  wg-easy:
+    image: 'ghcr.io/wg-easy/wg-easy:latest'
+    network_mode: host
+    environment:
+      - 'WG_HOST=${SERVICE_URL_WIREGUARDEASY}'
+      - WG_PORT=51820
+      - 'LANG=${LANG:-en}'
+      - '_PASSWORD=${SERVICE_PASSWORD_ADMIN}'
+    volumes:
+      - 'wg-easy:/etc/wireguard'
+    cap_add:
+      - NET_ADMIN
+      - SYS_MODULE
