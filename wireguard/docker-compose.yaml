@@ -1,0 +1,37 @@
+#instrucciones para crear el contener de wireguardeasy
+
+services:
+  wg-easy:
+    image: 'ghcr.io/wg-easy/wg-easy:latest'
+    container_name: wg-easy
+    network_mode: host
+    environment:
+      WG_HOST: '${SERVICE_URL_WIREGUARDEASY}'
+      WG_PORT: 51820
+      LANG: en
+      PASSWORD_HASH: '${SERVICE_PASSWORD_ADMIN}'
+    volumes:
+      - 'wg-easy:/etc/wireguard'
+    cap_add:
+      - NET_ADMIN
+      - SYS_MODULE
+    restart: unless-stopped
+volumes:
+  wg-easy: null
+entrypoint:
+  - /bin/bash
+  - '-c'
+  - "eval \"wgpw '${SERVICE_PASSWORD_ADMIN}' > /pass-hash\"\neval \"$(cat /pass-hash) dumb-init node server.js\"\n"
+
+### Nota: para crear usuarios en wireguardeasy usar el comando:
+# docker exec -it wg-easy wg adduser NOMBREUSUARIO PASSWORD
+
+### Nota: ya que esta en salida de host(para que funcion con la red del vps y no la de docker)
+# # Permitir tráfico WireGuard → Internet
+# iptables -I DOCKER-USER 1 -i wg0 -o eth0 -j ACCEPT
+
+# # Permitir tráfico de respuesta Internet → WireGuard
+# iptables -I DOCKER-USER 2 -i eth0 -o wg0 -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT
+
+# # NAT de salida (obligatorio para navegar)
+# iptables -t nat -I POSTROUTING 1 -s 10.8.0.0/24 -o eth0 -j MASQUERADE
