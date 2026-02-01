@@ -9,3 +9,6 @@ ip a show wg0
 
 tcpdump -i any port 8000 -> se debe de cambiar el puerto por el que se quiera escuchar
 tcpdump -i eth0 port 8000 -> interfas por la que se escucha
+
+
+# los Endpoint en los archivos de conexion 

@@ -21,12 +21,12 @@ iptables -t nat -I POSTROUTING 1 -s 10.8.0.0/24 -o eth0 -j MASQUERADE
 
 # DNAT: exponer el puerto 3000 
 
-iptables -t nat -I PREROUTING 1 -i eth0 -p tcp --dport 8000 \
- -j DNAT --to-destination 10.8.0.4:8000
+iptables -t nat -I PREROUTING 1 -i eth0 -p tcp --dport 3000 \
+ -j DNAT --to-destination 10.8.0.3:3000
 
 # Permitir forward hacia el cliente WG
 
-iptables -I FORWARD 1 -p tcp -d 10.8.0.4 --dport 8000 -j ACCEPT
+iptables -I FORWARD 1 -p tcp -d 10.8.0.3 --dport 3000 -j ACCEPT
 iptables -I FORWARD 2 -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT
 
 # Luego guardas
